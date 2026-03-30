@@ -1,2 +1,5 @@
 [phases.setup]
-nixPkgs = ["python3", "nodePackages.node-gyp"]
+nixPkgs = ["nodejs_20", "npm-9_x"]
+
+[start]
+cmd = "node index.js"
