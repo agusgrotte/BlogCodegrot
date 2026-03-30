@@ -1,24 +1,27 @@
 require("dotenv").config();
-
 const express = require("express");
-const webhookRouter = require("./routes/webhook");
+const { inicializar } = require("./db");
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+async function main() {
+  await inicializar();
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+  const webhookRouter = require("./routes/webhook");
+  const app = express();
+  const PORT = process.env.PORT || 3000;
 
-app.use("/webhook", webhookRouter);
+  app.use(express.urlencoded({ extended: false }));
+  app.use(express.json());
+  app.use("/webhook", webhookRouter);
 
-app.get("/", (req, res) => {
-  res.json({ status: "ok", servicio: "WhatsApp Ecommerce Bot", version: "1.0.0" });
-});
+  app.get("/", (req, res) => {
+    res.json({ status: "ok", servicio: "WhatsApp Ecommerce Bot", version: "1.0.0" });
+  });
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
-  console.log(`Webhook URL: http://localhost:${PORT}/webhook/whatsapp`);
-});
+  app.listen(PORT, () => {
+    console.log(`Servidor corriendo en puerto ${PORT}`);
+  });
+}
 
-module.exports = app;
+main().catch(console.error);
+
 
